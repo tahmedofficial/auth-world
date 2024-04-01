@@ -1,6 +1,10 @@
+import { useContext } from "react";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../../providers/AuthProvider";
 
 const Register = () => {
+
+    const { createUser } = useContext(AuthContext);
 
     const handleRegister = (event) => {
         event.preventDefault();
@@ -8,6 +12,16 @@ const Register = () => {
         const email = event.target.email.value;
         const password = event.target.password.value;
         console.log(name, email, password);
+
+        // create user in firebase
+        createUser(email, password)
+            .then(result => {
+                console.log(result.user);
+            })
+            .catch(error => {
+                console.log(error);
+            })
+
     }
 
 
@@ -41,7 +55,7 @@ const Register = () => {
                             </label>
                         </div>
                         <div className="form-control mt-5">
-                            <button className="btn btn-primary">Login</button>
+                            <button className="btn btn-primary">Register</button>
                         </div>
                     </form>
                     <div className="flex items-center mb-3 mx-auto">
