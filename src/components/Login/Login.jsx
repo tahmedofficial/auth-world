@@ -1,11 +1,12 @@
 import { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../providers/AuthProvider";
 
 
 const Login = () => {
 
-    const { signInUser } = useContext(AuthContext);
+    const { signInUser, signInWithGoogle } = useContext(AuthContext);
+    const navigate = useNavigate();
 
     const handleLogin = (event) => {
         event.preventDefault();
@@ -17,12 +18,25 @@ const Login = () => {
         signInUser(email, password)
             .then(result => {
                 console.log(result.user);
+                event.target.reset()
+                navigate("/")
             })
             .catch(error => {
                 console.log(error);
             })
+
     }
 
+    const handleGoogleSignIn = () => {
+        signInWithGoogle()
+            .then(result => {
+                console.log(result.user);
+            })
+            .catch(erroe => {
+                console.erroe(erroe);
+            })
+
+    }
 
     return (
         <div className="hero min-h-screen bg-base-200">
@@ -51,11 +65,14 @@ const Login = () => {
                             <button className="btn btn-primary">Login</button>
                         </div>
                     </form>
-                    <div className="flex items-center mb-3 mx-auto">
+                    <div className="flex items-center mx-auto">
                         <p>New to Auth World? please</p>
                         <Link to="/register">
                             <button className="btn btn-link">register</button>
                         </Link>
+                    </div>
+                    <div className="mb-4">
+                        <button onClick={handleGoogleSignIn} className="btn btn-primary">Google</button>
                     </div>
                 </div>
             </div>
